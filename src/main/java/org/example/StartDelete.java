@@ -1,30 +1,33 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import javax.swing.*;
+import java.io.*;
 import java.util.HashMap;
 
 public class StartDelete {
-    private WebDriver driver;
-    private HashMap<String, String> itemsToDeleteMap = CSVFileReader.getToDeleteMap();
+    private final WebDriver driver;
+    private final HashMap<String, String> itemsToDeleteMap = CSVFileReader.getToDeleteMap();
     public StartDelete(){
         driver = AdminLogin.getDriver();
         startDelete();
     }
     public void startDelete(){
         for(String tenderOID : itemsToDeleteMap.keySet()){
-            String deleteString = AdminLogin.getWebsite() + "TenderServlet?function=Delete&item=" + tenderOID;
-            System.out.println(itemsToDeleteMap.get(tenderOID));
-            System.out.println(deleteString);
+            String deleteString = PropertyReader.getWebsite() + "TenderServlet?function=Delete&item=" + tenderOID;
             driver.get(deleteString);
-            WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
-            String text = textElement.getText();
-            if(checkFileNumber(text, itemsToDeleteMap.get(tenderOID))){
-                driver.findElement(By.name("yes")).submit();
-                itemsToDeleteMap.remove(tenderOID);
+            try {
+                WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
+                String text = textElement.getText();
+                if (checkFileNumber(text, itemsToDeleteMap.get(tenderOID))) {
+                    driver.findElement(By.name("yes")).submit();
+                    itemsToDeleteMap.remove(tenderOID);
+                }
+            }catch(NoSuchElementException e){
+                System.out.println("Element not found");
             }
         }
         StringBuilder notDeleted = new StringBuilder();
@@ -32,7 +35,11 @@ public class StartDelete {
             notDeleted.append(tenderOID);
             notDeleted.append("\n");
         }
-        JOptionPane.showMessageDialog(null, "Folgende Vergaben konnten nicht gelöscht werden:\n" + notDeleted);
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))){
+            writer.write(notDeleted.toString() + " not deleted");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     public boolean checkFileNumber(String text, String fileNumber){
         System.out.println(text);
