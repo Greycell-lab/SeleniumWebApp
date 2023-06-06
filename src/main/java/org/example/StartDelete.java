@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import javax.swing.*;
 import java.util.HashMap;
 
 public class StartDelete {
@@ -23,10 +24,15 @@ public class StartDelete {
             String text = textElement.getText();
             if(checkFileNumber(text, itemsToDeleteMap.get(tenderOID))){
                 driver.findElement(By.name("yes")).submit();
-            }else{
-                System.out.println("Vergabenummer stimmt nicht");
+                itemsToDeleteMap.remove(tenderOID);
             }
         }
+        StringBuilder notDeleted = new StringBuilder();
+        for(String tenderOID : itemsToDeleteMap.keySet()){
+            notDeleted.append(tenderOID);
+            notDeleted.append("\n");
+        }
+        JOptionPane.showMessageDialog(null, "Folgende Vergaben konnten nicht gelöscht werden:\n" + notDeleted);
     }
     public boolean checkFileNumber(String text, String fileNumber){
         System.out.println(text);
