@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class StartDelete {
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-hh:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-hh:mm:ss");
     private final WebDriver driver;
     private String tempFileNumber;
     private final HashMap<String, String> itemsToDeleteMap = CSVFileReader.getToDeleteMap();
@@ -57,7 +57,6 @@ public class StartDelete {
         driver.get(PropertyReader.getWebsite());
     }
     public boolean checkFileNumber(String text, String fileNumber){
-        System.out.println(text);
         tempFileNumber = text.substring(24, 36);
         return text.contains(fileNumber);
 
