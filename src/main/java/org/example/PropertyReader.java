@@ -21,7 +21,6 @@ public class PropertyReader {
             e.printStackTrace();
         }
     }
-
     public static String getWebsite() {
         return website;
     }

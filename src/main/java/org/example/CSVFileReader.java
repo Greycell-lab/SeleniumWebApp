@@ -17,7 +17,6 @@ public class CSVFileReader {
             while((nextRecord = csvReader.readNext()) != null){
                 toDeleteMap.put(nextRecord[0], nextRecord[1]);
             }
-            System.out.println(toDeleteMap);
         }catch(Exception e){
             e.printStackTrace();
         }
