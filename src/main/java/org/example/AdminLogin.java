@@ -7,7 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class AdminLogin {
     PropertyReader reader = new PropertyReader();
@@ -29,7 +28,6 @@ public class AdminLogin {
         passwordBox.sendKeys(reader.getPassword());
         passwordBox.submit();
     }
-
     public static WebDriver getDriver() {
         return driver;
     }
