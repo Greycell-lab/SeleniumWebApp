@@ -26,13 +26,12 @@ public class AdminLogin {
         usernameBox.sendKeys(reader.getUsername());
         passwordBox.sendKeys(reader.getPassword());
         passwordBox.submit();
-        waitSeconds();
     }
 
     public static WebDriver getDriver() {
         return driver;
     }
-    public void waitSeconds(){
+    public static void waitSeconds(){
         try{
             Thread.sleep(1000);
         }catch(InterruptedException e){

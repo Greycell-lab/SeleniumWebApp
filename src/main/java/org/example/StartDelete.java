@@ -26,11 +26,11 @@ public class StartDelete {
             notDeleted.append(formatter.format(LocalDateTime.now())).append(": ");
             driver.get(deleteString);
             try {
-                Thread.sleep(1000);
+                AdminLogin.waitSeconds();
                 WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
                 String text = textElement.getText();
                 if (checkFileNumber(text, itemsToDeleteMap.get(tenderOID))) {
-                    Thread.sleep(1000);
+                    AdminLogin.waitSeconds();
                     driver.findElement(By.name("yes")).submit();
                     notDeleted.append(tenderOID);
                     notDeleted.append(" deleted.\n");
@@ -45,8 +45,6 @@ public class StartDelete {
                 }
             }catch(NoSuchElementException e){
                 notDeleted.append(tenderOID).append(" not deleted! Cause: Vergabe nicht gefunden.\n");
-            }catch(InterruptedException e){
-                e.printStackTrace();
             }
         }
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))){
