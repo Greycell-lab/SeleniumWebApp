@@ -21,8 +21,8 @@ public class StartDelete {
             for (String tenderOID : itemsToDeleteMap.keySet()) {
                 String deleteString = PropertyReader.getWebsite() + "TenderServlet?function=Delete&item=" + tenderOID;
                 notDeleted.append(formatter.format(LocalDateTime.now())).append(": ");
-                driver.get(deleteString);
                 try {
+                    driver.get(deleteString);
                     AdminLogin.waitSeconds();
                     WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
                     String text = textElement.getText();
@@ -43,18 +43,24 @@ public class StartDelete {
                 } catch (NoSuchElementException e) {
                     notDeleted.append(tenderOID).append(" not deleted! Cause: Vergabe nicht gefunden.\n");
                 }catch (NoSuchWindowException e){
+                    ConfirmQuestion.errorPane();
+                    notDeleted.append("Error: Browser closed");
+                    writeLog(notDeleted.toString());
+                    driver.quit();
                     System.exit(0);
                 }
             }
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))) {
-                writer.write(notDeleted.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            driver.get(PropertyReader.getWebsite());
+            writeLog(notDeleted.toString());
     }
     private boolean checkFileNumber(String text, String fileNumber){
         tempFileNumber = text.substring(24, 36);
         return text.contains(fileNumber);
+    }
+    public void writeLog(String log){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))) {
+            writer.write(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

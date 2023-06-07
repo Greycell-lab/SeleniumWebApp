@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AdminLogin {
     PropertyReader reader = new PropertyReader();
-    private static WebDriver driver;
+    public static WebDriver driver;
     public AdminLogin(){
 
             getAdminLogin();
