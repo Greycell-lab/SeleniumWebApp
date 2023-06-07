@@ -1,7 +1,5 @@
 package org.example;
 
-import org.openqa.selenium.WebDriver;
-
 import javax.swing.*;
 
 public class ConfirmQuestion extends JFrame {
