@@ -17,7 +17,7 @@ public class AdminLogin {
     private void getAdminLogin(){
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(200, TimeUnit.MILLISECONDS);
         driver.manage().window().maximize();
         driver.get(PropertyReader.getWebsite());
         waitSeconds();
@@ -33,7 +33,7 @@ public class AdminLogin {
     }
     public static void waitSeconds(){
         try{
-            Thread.sleep(1000);
+            Thread.sleep(800);
         }catch(InterruptedException e){
             e.printStackTrace();
         }

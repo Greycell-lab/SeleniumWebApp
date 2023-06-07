@@ -1,9 +1,6 @@
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -21,42 +18,43 @@ public class StartDelete {
     }
     public void startDelete(){
         StringBuilder notDeleted = new StringBuilder();
-        for(String tenderOID : itemsToDeleteMap.keySet()){
-            String deleteString = PropertyReader.getWebsite() + "TenderServlet?function=Delete&item=" + tenderOID;
-            notDeleted.append(formatter.format(LocalDateTime.now())).append(": ");
-            driver.get(deleteString);
-            try {
-                AdminLogin.waitSeconds();
-                WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
-                String text = textElement.getText();
-                if (checkFileNumber(text, itemsToDeleteMap.get(tenderOID))) {
+            for (String tenderOID : itemsToDeleteMap.keySet()) {
+                String deleteString = PropertyReader.getWebsite() + "TenderServlet?function=Delete&item=" + tenderOID;
+                notDeleted.append(formatter.format(LocalDateTime.now())).append(": ");
+                driver.get(deleteString);
+                try {
                     AdminLogin.waitSeconds();
-                    driver.findElement(By.name("yes")).submit();
-                    notDeleted.append(tenderOID);
-                    notDeleted.append(" deleted.\n");
-                }else{
-                    notDeleted.append(tenderOID)
-                            .append(" not deleted! Cause: Falsches Aktenzeichen. (")
-                            .append("Von CSV Datei: ")
-                            .append(itemsToDeleteMap.get(tenderOID))
-                            .append(" -> Von Vergabeplattform: ")
-                            .append (tempFileNumber)
-                            .append(").\n");
+                    WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
+                    String text = textElement.getText();
+                    if (checkFileNumber(text, itemsToDeleteMap.get(tenderOID))) {
+                        AdminLogin.waitSeconds();
+                        driver.findElement(By.name("yes")).submit();
+                        notDeleted.append(tenderOID);
+                        notDeleted.append(" deleted.\n");
+                    } else {
+                        notDeleted.append(tenderOID)
+                                .append(" not deleted! Cause: Falsches Aktenzeichen. (")
+                                .append("Von CSV Datei: ")
+                                .append(itemsToDeleteMap.get(tenderOID))
+                                .append(" -> Von Vergabeplattform: ")
+                                .append(tempFileNumber)
+                                .append(").\n");
+                    }
+                } catch (NoSuchElementException e) {
+                    notDeleted.append(tenderOID).append(" not deleted! Cause: Vergabe nicht gefunden.\n");
+                }catch (NoSuchWindowException e){
+                    System.exit(0);
                 }
-            }catch(NoSuchElementException e){
-                notDeleted.append(tenderOID).append(" not deleted! Cause: Vergabe nicht gefunden.\n");
             }
-        }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))){
-            writer.write(notDeleted.toString());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        driver.get(PropertyReader.getWebsite());
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("activity.log"))) {
+                writer.write(notDeleted.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            driver.get(PropertyReader.getWebsite());
     }
-    public boolean checkFileNumber(String text, String fileNumber){
+    private boolean checkFileNumber(String text, String fileNumber){
         tempFileNumber = text.substring(24, 36);
         return text.contains(fileNumber);
-
     }
 }
