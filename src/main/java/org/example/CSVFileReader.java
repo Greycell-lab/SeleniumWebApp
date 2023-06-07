@@ -11,6 +11,13 @@ public class CSVFileReader {
     private final static HashMap<String, String> toDeleteMap = new HashMap<>();
     public CSVFileReader(){
         AdminLogin.waitSeconds();
+        readFile();
+    }
+
+    public static HashMap<String, String> getToDeleteMap() {
+        return toDeleteMap;
+    }
+    private void readFile(){
         try{
             FileReader fileReader = new FileReader(PropertyReader.getPath());
             CSVReader csvReader = new CSVReaderBuilder(fileReader).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build();
@@ -21,9 +28,5 @@ public class CSVFileReader {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    public static HashMap<String, String> getToDeleteMap() {
-        return toDeleteMap;
     }
 }
