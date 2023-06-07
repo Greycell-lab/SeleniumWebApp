@@ -12,7 +12,6 @@ public class AdminLogin {
     PropertyReader reader = new PropertyReader();
     public static WebDriver driver;
     public AdminLogin(){
-
             getAdminLogin();
     }
     private void getAdminLogin(){
