@@ -20,7 +20,6 @@ public class PropertyReader {
             password = properties.getProperty("password");
             path = properties.getProperty("path");
             waitTime = Integer.parseInt(properties.getProperty("wait"));
-            System.out.println(waitTime);
         } catch(IOException e){
             e.printStackTrace();
         }
