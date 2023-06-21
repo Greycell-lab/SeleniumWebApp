@@ -1,6 +1,5 @@
 package org.example;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +11,7 @@ public class PropertyReader {
     private String password;
     private static String path;
     public PropertyReader(){
-        try(InputStream input = new FileInputStream(new File("websites.properties"))){
+        try(InputStream input = new FileInputStream("websites.properties")){
             Properties properties = new Properties();
             properties.load(input);
             website = properties.getProperty("website");
