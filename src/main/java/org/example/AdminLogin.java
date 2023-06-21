@@ -6,15 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 
 public class AdminLogin {
     public static final PropertyReader reader = new PropertyReader();
-    public static HttpURLConnection con = null;
     public static WebDriver driver;
     public AdminLogin() {
             getAdminLogin();
@@ -41,19 +36,5 @@ public class AdminLogin {
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-    }
-    public static int getResponseCode(){
-        try {
-            con = (HttpURLConnection) new URL(PropertyReader.getWebsite()).openConnection();
-            con.setRequestMethod("HEAD");
-            con.connect();
-            int rc = con.getResponseCode();
-            con.disconnect();
-            con = null;
-            return rc;
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return 0;
     }
 }

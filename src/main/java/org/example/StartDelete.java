@@ -4,20 +4,16 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 public class StartDelete {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-hh:mm:ss");
     private final WebDriver driver;
-    private final String expectedURL = PropertyReader.getWebsite() + "TenderServlet?function=Show&menu=tender";
     private String tempFileNumber;
     private final HashMap<String, String> itemsToDeleteMap = CSVFileReader.getToDeleteMap();
     public StartDelete(){
@@ -75,8 +71,5 @@ public class StartDelete {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public static boolean isExpectedURL(WebDriver driver, String expectedURL){
-        return driver.getCurrentUrl().equals(expectedURL);
     }
 }
