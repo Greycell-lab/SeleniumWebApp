@@ -23,11 +23,11 @@ public class StartDelete {
                 notDeleted.append(formatter.format(LocalDateTime.now())).append(": ");
                 try {
                     driver.get(deleteString);
-                    AdminLogin.waitSeconds();
+                    AdminLogin.waitSeconds(AdminLogin.reader.getWaitTime());
                     WebElement textElement = driver.findElement(By.cssSelector(".entryLine"));
                     String text = textElement.getText();
                     if (checkFileNumber(text, itemsToDeleteMap.get(tenderOID))) {
-                        AdminLogin.waitSeconds();
+                        AdminLogin.waitSeconds(AdminLogin.reader.getWaitTime());
                         driver.findElement(By.name("yes")).submit();
                         notDeleted.append(tenderOID);
                         notDeleted.append(" deleted.\n");

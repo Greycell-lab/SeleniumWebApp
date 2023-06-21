@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class CSVFileReader {
     private final static HashMap<String, String> toDeleteMap = new HashMap<>();
     public CSVFileReader(){
-        AdminLogin.waitSeconds();
+        AdminLogin.waitSeconds(1000);
         readFile();
     }
 

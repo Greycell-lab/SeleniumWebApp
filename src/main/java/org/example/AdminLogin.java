@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class AdminLogin {
-    PropertyReader reader = new PropertyReader();
+    public static final PropertyReader reader = new PropertyReader();
     public static WebDriver driver;
     public AdminLogin(){
             getAdminLogin();
@@ -17,10 +17,10 @@ public class AdminLogin {
     private void getAdminLogin(){
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
         driver = new ChromeDriver();
-        new WebDriverWait(driver, Duration.ofMillis(200));
+        new WebDriverWait(driver, Duration.ofMillis(reader.getWaitTime()));
         driver.manage().window().maximize();
         driver.get(PropertyReader.getWebsite());
-        waitSeconds();
+        waitSeconds(1000);
         WebElement usernameBox = driver.findElement(By.name("j_username"));
         WebElement passwordBox = driver.findElement(By.name("j_password"));
         usernameBox.sendKeys(reader.getUsername());
@@ -30,9 +30,9 @@ public class AdminLogin {
     public static WebDriver getDriver() {
         return driver;
     }
-    public static void waitSeconds(){
+    public static void waitSeconds(int millis){
         try{
-            Thread.sleep(800);
+            Thread.sleep(millis);
         }catch(InterruptedException e){
             e.printStackTrace();
         }
